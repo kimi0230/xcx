@@ -68,7 +68,7 @@ Page({
 
   // 取得用戶訊息
   getUserInfo:function(e){
-    // console.log(e);
+    console.log(e);
     this.setData({
       userInfo:e.detail.userInfo,
       hasUserInfo:true
