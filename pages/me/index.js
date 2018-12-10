@@ -5,7 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    'userInfo':"",
+    'hasUserInfo':false,
+    'canIUse':wx.canIUse("button.open-type.getUserInfo")
   },
 
   /**
@@ -62,5 +64,14 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  // 取得用戶訊息
+  getUserInfo:function(e){
+    // console.log(e);
+    this.setData({
+      userInfo:e.detail.userInfo,
+      hasUserInfo:true
+    })
   }
 })
