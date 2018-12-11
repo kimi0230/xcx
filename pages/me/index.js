@@ -1,6 +1,6 @@
 //取得應用實例
 const app = getApp();
-console.log(app);
+// console.log(app);
 
 // pages/me/index.js
 Page({
