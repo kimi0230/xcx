@@ -1,3 +1,7 @@
+//取得應用實例
+const app = getApp();
+console.log(app);
+
 // pages/me/index.js
 Page({
 
@@ -14,7 +18,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    if(app.globalData.userInfo){
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo:true
+      })
+    }else if(this.data.canIUse){
+      //由於getUserInfo是網路請求,可能會在page.onload之後才返回
+      //為了防止這種情況發生,所以加入callback
+      app.userInfoReadyCallback = res =>{
+        this.setData({
+          userInfo: app.globalData.userInfo,
+          hasUserInfo: true
+        })
+      }
+    }
   },
 
   /**
