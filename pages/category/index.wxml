@@ -1,28 +1,15 @@
 <!--pages/category/index.wxml-->
 <view class="caregory">
- <scroll-view class="nav_left" scroll-y>
-    <block wx:for="{{navLeftItems}}">
-      <view class="nav_left_items {{curIndex == index ? 'nav_left_item-active' : ''}}" data-index="{{index}}" bindtap="switchRightTab">
-      {{item}}
-      </view>
-    </block>
-  </scroll-view>
-
-  <scroll-view class="nav_right">
-  
-  </scroll-view>
-</view>
-
-<!-- <view class='caregory'>
   <scroll-view class="nav_left" scroll-y>
     <block wx:for="{{navLeftItems}}">
       <view class="nav_left_items {{curIndex == index ? 'nav_left_item-active' : ''}}" data-index="{{index}}" bindtap="switchRightTab">
-      {{item}}
+        {{item}}
       </view>
     </block>
   </scroll-view>
-  <scroll-view class='nav_right' scroll-y>
-      <view wx:if='{navRightItems[curIndex]' style='padding-bottom: 10px;'>
+
+  <scroll-view class="nav_right" scroll-y>
+    <view wx:if="{{navRightItems[curIndex]}}" style='padding-bottom: 10px;'>
       <block wx:for="{{navRightItems[curIndex]}}" wx:for-item="item">
         <view class='jd-category'>
           <view class='title'>{{item.title}}</view>
@@ -38,4 +25,4 @@
       </block>
     </view>
   </scroll-view>
-</view> -->
+</view>
