@@ -8,7 +8,8 @@ Page({
    */
   data: {
     navLeftItems: [],
-    navRightItems: []
+    navRightItems: [],
+    curIndex: 0
   },
 
   /**
@@ -27,7 +28,7 @@ Page({
         "content-type": "application/json"
       },
       success(res) {
-        console.log(res.data);
+        // console.log(res.data);
         // console.log(self);
         self.setData({
           navLeftItems: res.data.navLeftItems,
@@ -36,7 +37,18 @@ Page({
       }
     })
 
-    wx.hideLoading()
+    wx.hideLoading();
+  },
+
+  // 點擊左邊menu時 變更active狀態
+  switchRightTab: function(e) {
+    const self = this;
+    // console.log(e);
+    let index = e.currentTarget.dataset.index;
+    // console.log(index);
+    self.setData({
+      curIndex: index
+    });
   },
 
   /**
