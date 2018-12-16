@@ -45,7 +45,7 @@ Page({
   switchProlistDetail:function(e){
     console.log(e);
     let index = e.currentTarget.dataset.index;
-    
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -79,7 +79,24 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-
+    //顯示加載狀態
+    wx.showNavigationBarLoading();
+    //下拉刷新
+    const self = this;
+    wx.request({
+      url: interfaces.productionsList,
+      header: {
+        "content-type": "application/json"
+      },
+      success(res) {
+        self.setData({
+          prolist: res.data
+        })
+        // 隱藏加載狀態
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
+      }
+    })
   },
 
   /**
