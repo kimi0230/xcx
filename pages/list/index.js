@@ -7,7 +7,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    prolist:[]
+    prolist: [],
+    page: 1,
+    size: 5,
+    noData: false
   },
 
   /**
@@ -40,9 +43,9 @@ Page({
     })
 
     wx.hideLoading();
-    
+
   },
-  switchProlistDetail:function(e){
+  switchProlistDetail: function(e) {
     console.log(e);
     let index = e.currentTarget.dataset.index;
 
@@ -83,6 +86,12 @@ Page({
     wx.showNavigationBarLoading();
     //下拉刷新
     const self = this;
+
+    self.setData({
+      page: 1,
+      noData: false
+    })
+    
     wx.request({
       url: interfaces.productionsList,
       header: {
@@ -103,7 +112,43 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
+    //上拉加載
 
+    //停止下拉刷新
+    wx.stopPullDownRefresh();
+    wx.showNavigationBarLoading();
+
+    const prolist = this.data.prolist;
+    let page = this.data.page;
+
+    this.setData({
+      page: ++page
+    });
+
+    const self = this;
+    wx.request({
+      url: interfaces.productionsList + '/' + self.data.page + '/' + self.data.size,
+      success(res) {
+        if (res.data.length == 0) {
+          self.setData({
+            noData: true
+          })
+        } else {
+          res.data.forEach(item => {
+            prolist.push(item);
+          })
+          // prolist.push.apply(prolist,res.data);
+          // console.log(res.data);
+          // console.log(prolist);
+          self.setData({
+            prolist: prolist
+          })
+        }
+
+        // 隱藏加載狀態
+        wx.hideNavigationBarLoading();
+      }
+    })
   },
 
   /**
