@@ -51,6 +51,15 @@ Page({
     });
   },
 
+  // 顯示列表內容
+  showListView: function(e) {
+    // console.log(e);
+    let txt = e.currentTarget.dataset.txt;
+    wx.navigateTo({
+      url: '/pages/list/index?title='+txt,
+    })
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
