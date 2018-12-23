@@ -53,7 +53,10 @@ Page({
   },
 
   popBaitiaoView:function(){
-    console.log('顯示白條');
+    // console.log('顯示白條');
+    this.setData({
+      hideBaitiao:false
+    })
   },
 
   popBuyView: function () {

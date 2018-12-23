@@ -1,0 +1,29 @@
+<!--components/IOU/index.wxml-->
+<view class='popupDom' hidden='{{hideBaitiao}}'>
+  <view class='pop_main'>
+    <!-- 頭部 -->
+    <view class='pop_header'>
+      打白條購買
+      <text catchtap='hideBaitiaoView' data-target="self">x</text>
+    </view>
+
+    <!-- 中間 -->
+    <view class='pop_body'>
+      <block wx:for='{{baitiao}}' wx:key="index">
+        <view class='section_item' catchtap='selectItem' data-index='{{index}}'>
+          <image wx:if='{{item.select}}' src='/image/selected.png'></image>
+          <image wx:else src='/image/unselect.png'></image>
+          <view class='detail'>
+            <text class='dec'>{{item.desc}}</text>
+            <text class='tip'>{{item.tip}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 尾部 -->
+    <view class='pop_btn'>
+      <button bindtap='makeBaitiao'>立即打白條</button>
+    </view>
+  </view>
+</view>
