@@ -150,7 +150,13 @@ Page({
       }
     })
   },
-
+  switchProlistDetail:function(e){
+    // console.log(e);
+    let index = e.currentTarget.dataset.index;
+    wx.navigateTo({
+      url:'/pages/detail/index?id='+this.data.prolist[index].id,
+    })
+  },
   /**
    * 用户点击右上角分享
    */
