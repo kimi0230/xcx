@@ -9,7 +9,13 @@ Page({
    */
   data: {
     partData: {},
-    baitiao: []
+    baitiao: [],
+    baitiaoSelectItem: {
+      desc: "【白条支付】首单享立减优惠"
+    },
+    hideBaitiao: true, // 是否隐藏白条的遮罩
+    hideBuy: true, // 是否购买的遮罩
+    badgeCount: 0
   },
 
   /**
@@ -46,6 +52,14 @@ Page({
     wx.hideLoading();
   },
 
+  popBaitiaoView:function(){
+    console.log('顯示白條');
+  },
+
+  popBuyView: function () {
+    console.log('顯示商品');
+  },
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
