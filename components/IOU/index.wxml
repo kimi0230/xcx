@@ -1,10 +1,10 @@
 <!--components/IOU/index.wxml-->
-<view class='popupDom' hidden='{{hideBaitiao}}'>
+<view class='popupDom' data-target="self" catchtap='hideBaitiaoView' hidden='{{hideBaitiao}}'>
   <view class='pop_main'>
     <!-- 頭部 -->
     <view class='pop_header'>
       打白條購買
-      <text catchtap='hideBaitiaoView' data-target="self">x</text>
+      <text data-target="self" catchtap='hideBaitiaoView'>x</text>
     </view>
 
     <!-- 中間 -->

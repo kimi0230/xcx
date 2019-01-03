@@ -27,6 +27,6 @@
     <!-- 已選 -->
     <infocell title='已選' desc='{{partData.count}}件' bind:popView='popBuyView'></infocell>
   </view>
-  <IOU baitiao="{{baitiao}}" hideBaitiao="{{hideBaitiao}}">
+  <IOU bind:updateSelect="updateSelectItem" baitiao="{{baitiao}}" hideBaitiao="{{hideBaitiao}}">
   </IOU>
 </view>

@@ -9,7 +9,7 @@ Page({
    */
   data: {
     partData: {},
-    baitiao: [],
+    baitiao: [], //分期付款內容
     baitiaoSelectItem: {
       desc: "【白条支付】首单享立减优惠"
     },
@@ -52,17 +52,24 @@ Page({
     wx.hideLoading();
   },
 
-  popBaitiaoView:function(){
+  popBaitiaoView: function() {
     // console.log('顯示白條');
     this.setData({
-      hideBaitiao:false
+      hideBaitiao: false
     })
   },
 
-  popBuyView: function () {
+  popBuyView: function() {
     console.log('顯示商品');
   },
-  
+
+  updateSelectItem: function(e) {
+    console.log(e);
+    this.setData({
+      baitiaoSelectItem: e.detail
+    })
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

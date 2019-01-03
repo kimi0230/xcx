@@ -27,7 +27,7 @@ Component({
    */
   methods: {
     popView: function () {
-      console.log("123");
+      console.log("popView");
       // 註冊事件
       this.triggerEvent('popView')
     }
