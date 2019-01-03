@@ -60,7 +60,10 @@ Page({
   },
 
   popBuyView: function() {
-    console.log('顯示商品');
+    // console.log('顯示商品');
+    this.setData({
+      hideBuy:false,
+    })
   },
 
   updateSelectItem: function(e) {
