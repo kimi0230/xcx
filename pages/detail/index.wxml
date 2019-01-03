@@ -29,5 +29,5 @@
   </view>
   <IOU bind:updateSelect="updateSelectItem" baitiao="{{baitiao}}" hideBaitiao="{{hideBaitiao}}"></IOU>
 
-  <buy hideBuy="{{hideBuy}}" partData="{{partData}}"></buy>
+  <buy hideBuy="{{hideBuy}}" partData="{{partData}}" bind:onGetCount="updateCount"></buy>
 </view>

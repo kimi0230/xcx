@@ -22,12 +22,16 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    hideBuyView(e){
+    hideBuyView(e) {
       if (e.target.dataset.target == "self") {
         this.setData({
           hideBuy: true
         })
       }
+    },
+    getCount(e) {
+      // 事件傳遞 (傳給父 detail/index.wxml)
+      this.triggerEvent('onGetCount', e.detail);
     }
   }
 })
