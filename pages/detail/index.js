@@ -72,13 +72,17 @@ Page({
       baitiaoSelectItem: e.detail
     })
   },
-  
+
   updateCount:function(e){
     let partData = this.data.partData;
     partData.count = e.detail.val;
     this.setData({
       partData: partData
     })
+  },
+
+  addCart:function(e){
+    console.log('加入購物車');
   },
 
   /**

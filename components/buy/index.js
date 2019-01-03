@@ -32,6 +32,14 @@ Component({
     getCount(e) {
       // 事件傳遞 (傳給父 detail/index.wxml)
       this.triggerEvent('onGetCount', e.detail);
+    },
+    buy(e){
+      this.setData({
+        hideBuy:true
+      })
+
+      // 事件傳遞 (傳給父 detail/index.wxml)
+      this.triggerEvent('buyEvent');
     }
   }
 })
