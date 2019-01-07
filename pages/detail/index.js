@@ -86,57 +86,70 @@ Page({
     // 將資料存入購物車,放到 wx的storage
     let self = this;
     wx.getStorage({
-      key: 'cartInfo',
-      success: function(res) {
-        // console.log(res);
-        const cartArray = res.data;
-        // 拿到現在添加的商品
-        const partData = self.data.partData;
-        let isExit = false;
-        
-        // 判斷數組是否存在該商品
-        cartArray.forEach(function(cart){
-          // console.log(cart);
-          if (cart.id == partData.id){
-            isExit= true;
-            cart.total += partData.count;
+        key: 'cartInfo',
+        success: function(res) {
+          // console.log(res);
+          const cartArray = res.data;
+          // 拿到現在添加的商品
+          const partData = self.data.partData;
+          let isExit = false;
+
+          // 判斷數組是否存在該商品
+          cartArray.forEach(function(cart) {
+            // console.log(cart);
+            if (cart.id == partData.id) {
+              isExit = true;
+              cart.total += partData.count;
+              wx.setStorage({
+                key: 'cartInfo',
+                data: cartArray
+              })
+            }
+          });
+
+          // 不存在storage時
+          if (!isExit) {
+            partData.total = partData.count;
+            cartArray.push(partData);
             wx.setStorage({
-              key:'cartInfo',
+              key: 'cartInfo',
               data: cartArray
             })
           }
-        });
 
-        // 不存在storage時
-        if(!isExit){
-          partData.total = partData.count;
+          // 商品數量
+          self.setBadge(cartArray);
+        },
+        fail: function() {
+          let partData = self.data.partData;
+          partData.total = self.data.partData.count;
+          // console.log(partData);
+          let cartArray = [];
+
           cartArray.push(partData);
           wx.setStorage({
             key: 'cartInfo',
-            data: cartArray
+            data: cartArray,
           })
+
+          // 商品數量
+          self.setBadge(cartArray);
+        },
+        complete: function() {
+
         }
-      },
-      fail: function() {
-        let partData = self.data.partData;
-        partData.total = self.data.partData.count;
-        // console.log(partData);
-        let cartArray = [];
+      }),
+      wx.showToast({
+        title: '加入購物車成功',
+        icon: "success",
+        duration: 3000
+      })
+  },
 
-        cartArray.push(partData);
-        wx.setStorage({
-          key: 'cartInfo',
-          data: cartArray,
-        })
-      },
-      complete: function() {
-
-      }
-    }),
-    wx.showToast({
-      title:'加入購物車成功',
-      icon:"success",
-      duration:3000
+  // 商品數量方法
+  setBadge: function(cartArray) {
+    this.setData({
+      badgeCount: cartArray.length
     })
   },
 
@@ -151,7 +164,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    const self = this;
+    wx.getStorage({
+      key: 'cartInfo',
+      success: function(res) {
+        const cartArray = res.data;
+        self.setBadge(cartArray);
+      },
+    })
   },
 
   /**
