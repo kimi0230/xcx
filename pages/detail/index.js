@@ -62,7 +62,7 @@ Page({
   popBuyView: function() {
     // console.log('顯示商品');
     this.setData({
-      hideBuy:false,
+      hideBuy: false,
     })
   },
 
@@ -73,7 +73,7 @@ Page({
     })
   },
 
-  updateCount:function(e){
+  updateCount: function(e) {
     let partData = this.data.partData;
     partData.count = e.detail.val;
     this.setData({
@@ -81,8 +81,63 @@ Page({
     })
   },
 
-  addCart:function(e){
-    console.log('加入購物車');
+  addCart: function(e) {
+    // console.log('加入購物車');
+    // 將資料存入購物車,放到 wx的storage
+    let self = this;
+    wx.getStorage({
+      key: 'cartInfo',
+      success: function(res) {
+        // console.log(res);
+        const cartArray = res.data;
+        // 拿到現在添加的商品
+        const partData = self.data.partData;
+        let isExit = false;
+        
+        // 判斷數組是否存在該商品
+        cartArray.forEach(function(cart){
+          // console.log(cart);
+          if (cart.id == partData.id){
+            isExit= true;
+            cart.total += partData.count;
+            wx.setStorage({
+              key:'cartInfo',
+              data: cartArray
+            })
+          }
+        });
+
+        // 不存在storage時
+        if(!isExit){
+          partData.total = partData.count;
+          cartArray.push(partData);
+          wx.setStorage({
+            key: 'cartInfo',
+            data: cartArray
+          })
+        }
+      },
+      fail: function() {
+        let partData = self.data.partData;
+        partData.total = self.data.partData.count;
+        // console.log(partData);
+        let cartArray = [];
+
+        cartArray.push(partData);
+        wx.setStorage({
+          key: 'cartInfo',
+          data: cartArray,
+        })
+      },
+      complete: function() {
+
+      }
+    }),
+    wx.showToast({
+      title:'加入購物車成功',
+      icon:"success",
+      duration:3000
+    })
   },
 
   /**
