@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "購物車"
+  "navigationBarTitleText": "購物車",
+  "usingComponents": {
+    "amount": "/components/amount/index"
+  }
 }
