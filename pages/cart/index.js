@@ -5,7 +5,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    cartArray: []
+    cartArray: [],
+    totalMoney: "0.00", // 總價
+    totalCount: 0, // 商品數量
+    selectAll: false //  是否全選
   },
 
   /**
@@ -31,6 +34,11 @@ Page({
       key: 'cartInfo',
       success: function(res) {
         const cartArray = res.data;
+
+        cartArray.forEach(function(cart) {
+          cart.select = false;
+        });
+
         self.setData({
           cartArray: cartArray
         })
@@ -63,12 +71,42 @@ Page({
     })
   },
 
+  // 跳到商品detail
   switchGoodDetail: function(e) {
     const index = e.currentTarget.dataset.index;
     const cartArray = this.data.cartArray;
     wx.navigateTo({
       url: '/pages/detail/index?id=' + cartArray[index].id,
     });
+  },
+
+  selectGood: function(e) {
+    // console.log(e);
+    const index = e.currentTarget.dataset.index;
+    const cartArray = this.data.cartArray;
+    cartArray[index].select = !cartArray[index].select;
+
+    console.log(cartArray);
+    // 合計 數量
+    let totalMoney = Number(this.data.totalMoney);
+    let totalCount = this.data.totalCount;
+
+    if (cartArray[index].select) {
+      //如果選中
+      totalMoney += cartArray[index].price * cartArray[index].total;
+      totalCount += cartArray[index].total;
+    } else {
+      // 沒選中
+      totalMoney -= cartArray[index].price * cartArray[index].total;
+      totalCount -= cartArray[index].total;
+    }
+
+    // 更新數據
+    this.setData({
+      cartArray: cartArray,
+      totalMoney: String(totalMoney.toFixed(2)),
+      totalCount: totalCount
+    })
   },
 
   /**
