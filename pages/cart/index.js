@@ -125,8 +125,9 @@ Page({
     let totalMoney = Number(this.data.totalMoney);
 
     // 計算金額
+    console.log(cartArray[index].total);
     if (cartArray[index].select) {
-      totalMoney -= Number(cartArray[index].price)
+      totalMoney -= Number(cartArray[index].price);
     }
 
     // 更新數據
@@ -183,7 +184,7 @@ Page({
   },
   // 進入當前滑鼠位置
   touchstart: function(e) {
-    console.log(e);
+    // console.log(e);
     // 開始觸摸時 重置所有刪除
     this.data.cartArray.forEach(function(cart) {
       if (cart.isTouchMove) {
@@ -198,12 +199,11 @@ Page({
   },
   // 滑鼠移動位置
   touchmove: function(e) {
-    console.log(e);
     let index = e.currentTarget.dataset.index;
 
     // 開始x和y座標    
-    var startX = this.data.clientX;
-    var startY = this.data.clientY;
+    var startX = this.data.startX;
+    var startY = this.data.startY;
 
     // 移動x和y座標
     let touchMoveX = e.changedTouches[0].clientX;
@@ -229,9 +229,11 @@ Page({
       if (i == index) {
         if (touchMoveX > startX) {
           //右滑
+          // console.log('右滑');
           cart.isTouchMove = false;
         } else {
           // 左滑
+          // console.log('左滑');
           cart.isTouchMove = true;
         }
       }
