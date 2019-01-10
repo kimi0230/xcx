@@ -40,7 +40,10 @@ Page({
         });
 
         self.setData({
-          cartArray: cartArray
+          cartArray: cartArray,
+          selectAll:false,
+          totalMoney: "0.00",
+          totalCount:0
         })
         // console.log(cartArray);
 
@@ -91,22 +94,88 @@ Page({
     let totalMoney = Number(this.data.totalMoney);
     let totalCount = this.data.totalCount;
 
+    // 選中狀態
+    let selectAll = this.data.selectAll;
+
     if (cartArray[index].select) {
-      //如果選中
-      totalMoney += cartArray[index].price * cartArray[index].total;
-      totalCount += cartArray[index].total;
+      totalMoney += Number(cartArray[index].price) * cartArray[index].total;
+      totalCount++;
     } else {
-      // 沒選中
-      totalMoney -= cartArray[index].price * cartArray[index].total;
-      totalCount -= cartArray[index].total;
+      totalMoney -= Number(cartArray[index].price) * cartArray[index].total;
+      totalCount--;
+      selectAll = false;
     }
 
     // 更新數據
     this.setData({
       cartArray: cartArray,
       totalMoney: String(totalMoney.toFixed(2)),
-      totalCount: totalCount
+      totalCount: totalCount,
+      selectAll: selectAll
     })
+  },
+
+  subCount: function(e) {
+    const index = e.currentTarget.dataset.index;
+    const cartArray = this.data.cartArray;
+    let totalMoney = Number(this.data.totalMoney);
+
+    // 計算金額
+    if (cartArray[index].select) {
+      totalMoney -= Number(cartArray[index].price)
+    }
+
+    // 更新數據
+    this.setData({
+      totalMoney: String(totalMoney.toFixed(2))
+    })
+  },
+  addCount: function(e) {
+    const index = e.currentTarget.dataset.index;
+    const cartArray = this.data.cartArray;
+    let totalMoney = Number(this.data.totalMoney);
+
+    // 計算金額
+    if (cartArray[index].select) {
+      totalMoney += Number(cartArray[index].price)
+    }
+
+    // 更新數據
+    this.setData({
+      totalMoney: String(totalMoney.toFixed(2))
+    })
+  },
+
+  // 全選
+  selectAll: function() {
+    const cartArray = this.data.cartArray;
+    let totalMoney = 0;
+    let totalCount = 0;
+    let selectAll = this.data.selectAll;
+
+    selectAll = !selectAll;
+    cartArray.forEach(function(cart) {
+      // 設置選中或不選中
+      cart.select = selectAll;
+
+      // 計算總金額與總數
+      if (cart.select) {
+        totalMoney += Number(cart.price * cart.total);
+        totalCount++;
+      } else {
+        // 全不選
+        totalMoney = 0
+        totalCount = 0
+      }
+    });
+    // 更新data
+    this.setData({
+      cartArray: cartArray,
+      totalMoney: String(totalMoney.toFixed(2)),
+      totalCount: totalCount,
+      selectAll: selectAll
+    })
+
   },
 
   /**
