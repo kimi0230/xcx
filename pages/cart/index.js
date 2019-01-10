@@ -8,7 +8,10 @@ Page({
     cartArray: [],
     totalMoney: "0.00", // 總價
     totalCount: 0, // 商品數量
-    selectAll: false //  是否全選
+    selectAll: false, //  是否全選
+    isTouchMove: false, // 是否滑動
+    startX: 0, //開始位置
+    startY: 0
   },
 
   /**
@@ -36,14 +39,15 @@ Page({
         const cartArray = res.data;
 
         cartArray.forEach(function(cart) {
-          cart.select = false;
+          cart.select = false; // 全不選
+          cart.isTouchMove = false; // 全不滑動
         });
 
         self.setData({
           cartArray: cartArray,
-          selectAll:false,
+          selectAll: false,
           totalMoney: "0.00",
-          totalCount:0
+          totalCount: 0
         })
         // console.log(cartArray);
 
@@ -177,7 +181,34 @@ Page({
     })
 
   },
+  // 進入當前滑鼠位置
+  touchstart: function(e) {
+    console.log(e);
+    // 開始觸摸時 重置所有刪除
+    this.data.cartArray.forEach(function(cart) {
+      if (cart.isTouchMove) {
+        cart.isTouchMove = false;
+      }
+    });
+    this.setData({
+      startX: e.changedTouches[0].clientX,
+      startY: e.changedTouches[0].clientY,
+      cartArray: this.data.cartArray
+    })
+  },
+  // 滑鼠移動位置
+  touchmove: function(e) {
+    console.log(e);
+    let index = e.currentTarget.dataset.index;
 
+    // 開始x和y座標    
+    var startX = this.data.clientX;
+    var startY = this.data.clientY;
+
+    // 移動x和y座標
+    let touchMoveX = e.changedTouches[0].clientX;
+    let touchMoveY = e.changedTouches[0].clientY;
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */
