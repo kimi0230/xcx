@@ -208,6 +208,107 @@ Page({
     // 移動x和y座標
     let touchMoveX = e.changedTouches[0].clientX;
     let touchMoveY = e.changedTouches[0].clientY;
+
+    // 計算角度
+    var angel = this.angel({
+      X: startX,
+      Y: startY
+    }, {
+      X: touchMoveX,
+      Y: touchMoveY
+    });
+
+    //
+    this.data.cartArray.forEach(function(cart, i) {
+      cart.isTouchMove = false;
+      // 滑動角度>30 直接return
+      if (Math.abs(angel) > 30) {
+        return;
+      }
+      // 匹配
+      if (i == index) {
+        if (touchMoveX > startX) {
+          //右滑
+          cart.isTouchMove = false;
+        } else {
+          // 左滑
+          cart.isTouchMove = true;
+        }
+      }
+    })
+
+    // 更新數據
+    this.setData({
+      cartArray: this.data.cartArray
+    })
+  },
+
+  angel(start, end) {
+    var _X = end.X - start.X;
+    var _Y = end.Y - start.Y;
+
+    // 角度 Math.atan();
+    return 360 * Math.atan(_Y / _X / (2 * Math.PI));
+  },
+
+  del: function(e) {
+    var self = this;
+    let index = e.currentTarget.dataset.index;
+
+    wx.getStorage({
+      key: 'cartInfo',
+      success: function(res) {
+        const partData = res.data;
+        partData.forEach(function(cart, i) {
+          if (cart.title == self.data.cartArray[index].title) {
+            partData.splice(i, 1);
+          }
+        })
+
+        // 刪完之後儲存
+        wx.setStorage({
+          key: 'cartInfo',
+          data: partData,
+        })
+
+        // 更新數據
+        self.update(index);
+      },
+    })
+  },
+  update(index) {
+    var cartArray = this.data.cartArray;
+    var totalMoney = Number(this.data.totalMoney);
+    var totalCount = this.data.totalCount;
+
+    //計算價格與數量
+    if (cartArray[index].select) {
+      totalMoney -= Number(cartArray[index].price) * cartArray[index].total;
+      totalCount--;
+    }
+
+    // 刪除
+    cartArray.splice(index, 1);
+
+    //更新數據
+    this.setData({
+      cartArray: cartArray, // this.data.totalMoney
+      totalMoney: String(totalMoney.toFixed(2)),
+      totalCount: totalCount
+    })
+
+    // 設置tabar圖標
+    if (cartArray.length > 0) {
+      wx.setTabBarBadge({
+        index: 2,
+        text: String(cartArray.length),
+      })
+    } else {
+      wx.removeTabBarBadge({
+        index: 2,
+      })
+    }
+
   },
   /**
    * 生命周期函数--监听页面隐藏
